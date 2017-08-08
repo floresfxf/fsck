@@ -1,0 +1,52 @@
+CORRECTNESS
+-------------------------------------------------------------------------
+UNCORRUPTED
+ No errors on default xv6 image                             [PASS]   5/5
+ No errors on image with deep directory structure           [PASS]   2/2
+ No errors on image with more blocks and inodes             [PASS]   2/2
+CORRUPTED
+ 1: Inode has bad type                                      [PASS]   2/2
+ 2: Direct pointer has invalid block                        [PASS]   2/2
+ 2: Indirect pointer is invalid block                       [PASS]   2/2
+ 2: Pointer in indirect block has invalid block             [PASS]   2/2
+ 3: Root inode is marked unused                             [PASS]   2/2
+ 3: Root inode has type T_FILE                              [PASS]   2/2
+ 4: Root dir lacks . entry                                  [PASS]   2/2
+ 4: Root dir lacks .. entry                                 [PASS]   2/2
+ 4: Subdir lacks . entry                                    [PASS]   2/2
+ 4: Subdir lacks .. entry                                   [PASS]   2/2
+ 5: Subdir .. entry refers to wrong parent dir              [PASS]   2/2
+ 5: Subdir .. entry refers to self                          [PASS]   2/2
+ 5: Subdir .. entry refers to file                          [PASS]   2/2
+ 5: Root dir .. entry does not refer to self                [FAIL]   0/2
+ 6: Direct pointer is marked free                           [PASS]   2/2
+ 6: Indirect pointer is marked free                         [PASS]   2/2
+ 6: Pointer in indirect block is marked free                [FAIL]   0/2
+ 7: Unused block marked used                                [PASS]   2/2
+ 8: Same block in direct pointers in same inode             [PASS]   2/2
+ 8: Same block in direct and indirect in same inode         [PASS]   2/2
+ 8: Same block in direct pointers in diff inodes            [PASS]   2/2
+ 8: Same block in direct and indirect in diff inodes        [PASS]   2/2
+ 9: Unused inode marked used                                [PASS]   2/2
+ 10: Inode referred to by root dir is marked unused         [PASS]   2/2
+ 10: Inode referred to by subdir is marked unused           [PASS]   2/2
+ 11: Bad ref count for file with two refs in root dir       [PASS]   2/2
+ 11: Bad ref count for file with two refs in subdir         [PASS]   2/2
+ 11: Bad ref count for file with two refs in diff dirs      [PASS]   2/2
+-------------------------------------------------------------------------
+                                           CORRECTNESS TOTAL        61/65
+
+STYLE
+-------------------------------------------------------------------------
+ Multiple commits to git repo                               [PASS]   2/2
+ Code compiles without warnings                             [PASS]   2/2
+ Code uses multiple functions                               [PASS]   2/2
+ Code uses constant NDIRECT                                 [PASS]   1/1
+ Code uses constant ROOTINO                                 [FAIL]   0/1
+ Code uses constants for inode type                         [PASS]   1/1
+ Code uses constants for items per block                    [PASS]   1/1
+-------------------------------------------------------------------------
+                                                 STYLE TOTAL         9/10
+
+
+                                                       TOTAL        70/75

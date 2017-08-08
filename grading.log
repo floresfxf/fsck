@@ -1,0 +1,237 @@
+gcc -Werror -Wall -g -o chkfs chkfs.c
+=== No errors on default xv6 image (01a) =======================================
+=== PASS (5/5) =================================================================
+
+=== No errors on image with deep directory structure (01b) =====================
+=== PASS (2/2) =================================================================
+
+=== No errors on image with more blocks and inodes (01c) =======================
+=== PASS (2/2) =================================================================
+
+=== 1: Inode has bad type (02a) ================================================
+ERROR: bad inode
+=== PASS (2/2) =================================================================
+
+=== 2: Direct pointer has invalid block (03a) ==================================
+ERROR: bad address in inode
+=== PASS (2/2) =================================================================
+
+=== 2: Indirect pointer is invalid block (03b) =================================
+ERROR: bad address in inode
+=== PASS (2/2) =================================================================
+
+=== 2: Pointer in indirect block has invalid block (03c) =======================
+ERROR: bad address in inode
+=== PASS (2/2) =================================================================
+
+=== 3: Root inode is marked unused (04a) =======================================
+ERROR: root directory does not exist
+=== PASS (2/2) =================================================================
+
+=== 3: Root inode has type T_FILE (04b) ========================================
+ERROR: inode marked use but not found in a directory
+=== FAIL (0/2) =================================================================
+
+=== 4: Root dir lacks . entry (05a) ============================================
+ERROR: directory not properly formatted
+=== PASS (2/2) =================================================================
+
+=== 4: Root dir lacks .. entry (05b) ===========================================
+ERROR: directory not properly formatted
+=== PASS (2/2) =================================================================
+
+=== 4: Subdir lacks . entry (05c) ==============================================
+ERROR: directory not properly formatted
+=== PASS (2/2) =================================================================
+
+=== 4: Subdir lacks .. entry (05d) =============================================
+ERROR: directory not properly formatted
+=== PASS (2/2) =================================================================
+
+=== 5: Subdir .. entry refers to wrong parent dir (06a) ========================
+the parent inum DOESNT match the '..' entry in the inum, about to return from checkchild 
+ERROR: parent directory mismatch
+=== PASS (2/2) =================================================================
+
+=== 5: Subdir .. entry refers to self (06b) ====================================
+the parent inum DOESNT match the '..' entry in the inum, about to return from checkchild 
+ERROR: parent directory mismatch
+=== PASS (2/2) =================================================================
+
+=== 5: Subdir .. entry refers to file (06c) ====================================
+the parent inum DOESNT match the '..' entry in the inum, about to return from checkchild 
+ERROR: parent directory mismatch
+=== PASS (2/2) =================================================================
+
+=== 5: Root dir .. entry does not refer to self (06d) ==========================
+=== FAIL (0/2) =================================================================
+
+=== 6: Direct pointer is marked free  (07a) ====================================
+ERROR: address used by inode but marked free in bitmap
+=== PASS (2/2) =================================================================
+
+=== 6: Indirect pointer is marked free (07b) ===================================
+ERROR: address used by inode but marked free in bitmap
+=== PASS (2/2) =================================================================
+
+=== 6: Pointer in indirect block is marked free (07c) ==========================
+=== FAIL (0/2) =================================================================
+
+=== 7: Unused block marked used (08a) ==========================================
+ERROR: bitmap marks block in use but it is not in use
+=== PASS (2/2) =================================================================
+
+=== 8: Same block in direct pointers in same inode (09a) =======================
+ERROR: address used more than once
+=== PASS (2/2) =================================================================
+
+=== 8: Same block in direct and indirect in same inode (09b) ===================
+ERROR: address used more than once
+=== PASS (2/2) =================================================================
+
+=== 8: Same block in direct pointers in diff inodes (09c) ======================
+ERROR: address used more than once
+=== PASS (2/2) =================================================================
+
+=== 8: Same block in direct and indirect in diff inodes (09d) ==================
+ERROR: address used more than once
+=== PASS (2/2) =================================================================
+
+=== 9: Unused inode marked used (10a) ==========================================
+ERROR: inode marked use but not found in a directory
+=== PASS (2/2) =================================================================
+
+=== 10: Inode referred to by root dir is marked unused (11a) ===================
+ERROR: inode referred to in directory but marked free
+=== PASS (2/2) =================================================================
+
+=== 10: Inode referred to by subdir is marked unused (11b) =====================
+ERROR: inode referred to in directory but marked free
+=== PASS (2/2) =================================================================
+
+=== 11: Bad ref count for file with two refs in root dir (12a) =================
+ERROR: bad reference count for file 20
+=== PASS (2/2) =================================================================
+
+=== 11: Bad ref count for file with two refs in subdir (12b) ===================
+ERROR: bad reference count for file 2
+=== PASS (2/2) =================================================================
+
+=== 11: Bad ref count for file with two refs in diff dirs (12c) ================
+ERROR: bad reference count for file 2
+=== PASS (2/2) =================================================================
+
+=== Multiple commits to git repo (13a) =========================================
+35 commits
+=== PASS (2/2) =================================================================
+
+=== Code compiles without warnings (13b) =======================================
+=== PASS (2/2) =================================================================
+
+=== Code uses multiple functions (13c) =========================================
+addressCheck
+bitMapCheck
+checkbitmap
+checkChild
+checkdir
+checkLinks
+checkParent
+checkroot
+checkTable
+inDir
+main
+rsect
+traverse_dir
+traverse_dir_by_inum
+validDataBlockCheck
+=== PASS (2/2) =================================================================
+
+=== Code uses constant NDIRECT (14a) ===========================================
+		for (i=0; i < NDIRECT+1; i++){														//loop through direct ptrs and check addresses
+		if(current_inode.addrs[NDIRECT] != 0){											//if there are indirect ptrs...
+			if (lseek(fsfd, current_inode.addrs[NDIRECT] * BSIZE, SEEK_SET)!= current_inode.addrs[NDIRECT] * BSIZE){
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+	for (i=0; i < NDIRECT; i++){														//loop through direct ptrs
+	if(current_inode.addrs[NDIRECT] != 0){											//if there are indirect ptrs...
+			if (lseek(fsfd, current_inode.addrs[NDIRECT] * BSIZE, SEEK_SET)!=current_inode.addrs[NDIRECT] * BSIZE){
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+				if (lseek(fsfd, current_inode.addrs[NDIRECT] * BSIZE + x * sizeof(uint), SEEK_SET) != current_inode.addrs[NDIRECT] * BSIZE + x * sizeof(uint)){
+	for (i=0; i < NDIRECT; i++){														//loop through direct ptrs
+	if(parent.addrs[NDIRECT] != 0){											//if there are indirect ptrs...
+			if (lseek(fsfd, parent.addrs[NDIRECT] * BSIZE, SEEK_SET)!= parent.addrs[NDIRECT]*BSIZE){
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+				if (lseek(fsfd, parent.addrs[NDIRECT] * BSIZE + x * sizeof(uint), SEEK_SET) != parent.addrs[NDIRECT] * BSIZE + x * sizeof(uint)){
+	for (i=0; i < NDIRECT; i++){														//loop through direct ptrs
+				for (x=0; x < NDIRECT; x++){           //loop through child_indode's directories via direct ptrs
+				if( child_inode.addrs[NDIRECT] !=0 ){												 //check for CHILD indirect ptrs
+					if (lseek(fsfd, child_inode.addrs[NDIRECT] * BSIZE, SEEK_SET) != child_inode.addrs[NDIRECT] * BSIZE){	//go to data block of ptrs
+					for(y=0; y<NINDIRECT; y++){														//loop through indirect ptrs
+						if (lseek(fsfd, child_inode.addrs[NDIRECT] * BSIZE + y * sizeof(uint), SEEK_SET) != child_inode.addrs[NDIRECT] * BSIZE + y * sizeof(uint)){  //move to next dir ptr
+		if (parent.addrs[NDIRECT] !=0){
+			for(z=0; z<NINDIRECT; z++){					//loop through all indirect ptr entires
+				if (lseek(fsfd, parent.addrs[NDIRECT]*BSIZE + z*sizeof(uint), SEEK_SET) != parent.addrs[NDIRECT]*BSIZE + z*sizeof(uint)){
+				for (x=0; x < NDIRECT; x++){           //loop through child_indode's directories via direct ptrs
+				if( child_inode.addrs[NDIRECT] !=0 ){												 //check for CHILD indirect ptrs
+					if (lseek(fsfd, child_inode.addrs[NDIRECT] * BSIZE, SEEK_SET) != child_inode.addrs[NDIRECT] * BSIZE){	//go to data block of ptrs
+					for(y=0; y<NINDIRECT; y++){														//loop through indirect ptrs
+						if (lseek(fsfd, child_inode.addrs[NDIRECT] * BSIZE + y * sizeof(uint), SEEK_SET) != child_inode.addrs[NDIRECT] * BSIZE + y * sizeof(uint)){ //move to next dir ptr
+		for (i=0; i < NDIRECT+1; i++){														//loop through direct ptrs and check addresses
+		if(current_inode.addrs[NDIRECT] != 0){											//if there are indirect ptrs...
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+				if (lseek(fsfd, current_inode.addrs[NDIRECT] * BSIZE + x*sizeof(uint), SEEK_SET) != current_inode.addrs[NDIRECT] * BSIZE + x*sizeof(uint)){
+	for(i=0;i<NDIRECT+1;i++){																				//loop through inode's direct ptrs
+	if(current_inode.addrs[NDIRECT] != 0){
+		for(j=0; j<NINDIRECT; j++){
+			if (lseek(fsfd, current_inode.addrs[NDIRECT] * BSIZE + j*sizeof(uint), SEEK_SET) != current_inode.addrs[NDIRECT] * BSIZE + j*sizeof(uint)){
+		for(x=0; x<NDIRECT; x++){  //loop through direct ptrs
+		if (in.addrs[NDIRECT]!=0){		//if there is an indirect ptr..
+			for(y=0; y<NINDIRECT; y++){
+				if (lseek(fsfd, in.addrs[NDIRECT] * BSIZE + y*sizeof(uint), SEEK_SET) != in.addrs[NDIRECT] * BSIZE + y*sizeof(uint)){
+	for(i=0; i< NDIRECT; i++){		//loop through direct ptrs
+	if(current_inode.addrs[NDIRECT]!=0){
+		for(y=0; y<NINDIRECT; y++){
+			if (lseek(fsfd, current_inode.addrs[NDIRECT] * BSIZE + y*sizeof(uint), SEEK_SET) != current_inode.addrs[NDIRECT] * BSIZE + y*sizeof(uint)){
+		for(x=0; x<NDIRECT; x++){  //loop through direct ptrs
+		if (in.addrs[NDIRECT]!=0){		//if there is an indirect ptr..
+			for(y=0; y<NINDIRECT; y++){
+				if (lseek(fsfd, in.addrs[NDIRECT] * BSIZE + y*sizeof(uint), SEEK_SET) != in.addrs[NDIRECT] * BSIZE + y*sizeof(uint)){
+=== PASS (1/1) =================================================================
+
+=== Code uses constant ROOTINO (14b) ===========================================
+Constant 'ROOTINO' not found
+=== FAIL (0/1) =================================================================
+
+=== Code uses constants for inode type (14c) ===================================
+				if(child_inode.type!=T_DIR){continue;}
+					if(child_inode.type!=T_DIR){continue;}
+		if (in.type!=T_DIR) {continue;}																				//check to see if inode is a dir
+		if (in.type!=T_DIR) {continue;}																				//check to see if inode is a dir
+		if (current_inode.type!=0 && current_inode.type!=T_FILE && current_inode.type!=T_DIR && current_inode.type!=T_DEV){  //check for valid type
+		if (current_inode.type==T_DIR){
+		if(current_inode.type==T_FILE){
+=== PASS (1/1) =================================================================
+
+=== Code uses constants for items per block (14d) ==============================
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+	for(i=0; i<DPB; i++){
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+	for(i=0; i<DPB; i++){															//loop thorugh all dir entries
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+			for(j=0; j<DPB; j++){																//loop through all children dir entries
+						for(k=0; k<DPB; k++){																//loop through all children dir entries
+					for(y=0; y<NINDIRECT; y++){														//loop through indirect ptrs
+						for(q=0; q<DPB; q++){
+			for(z=0; z<NINDIRECT; z++){					//loop through all indirect ptr entires
+			for(j=0; j<DPB; j++){																//loop through all children dir entries
+						for(k=0; k<DPB; k++){																//loop through all children dir entries
+					for(y=0; y<NINDIRECT; y++){														//loop through indirect ptrs
+						for(q=0; q<DPB; q++){
+			for(x=0; x<NINDIRECT; x++){														//loop through indirect ptrs
+		for(j=0; j<NINDIRECT; j++){
+			for(y=0; y<NINDIRECT; y++){
+		for (x=0; x<DPB; x++){
+		for(y=0; y<NINDIRECT; y++){
+			for(z=0; z<DPB; z++){
+			for(y=0; y<NINDIRECT; y++){
+=== PASS (1/1) =================================================================
+
